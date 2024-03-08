@@ -1,0 +1,482 @@
+[gd_scene load_steps=39 format=3 uid="uid://cakj6rcipdjlj"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_3pc2h"]
+[ext_resource type="Texture2D" uid="uid://cvtdj03ykucbp" path="res://assets/textures/dev/grids/Dark/texture_07.png" id="1_qdva4"]
+[ext_resource type="Texture2D" uid="uid://b4bw6i6o47aw7" path="res://assets/sky.hdr" id="2_7s84a"]
+[ext_resource type="Script" path="res://scripts/player.gd" id="3_7up8k"]
+[ext_resource type="PackedScene" uid="uid://cgfjk55sg6ely" path="res://scenes/enemies/enemy_2.tscn" id="3_qcdlw"]
+[ext_resource type="PackedScene" uid="uid://ds645tdjnok27" path="res://scenes/enemies/enemy_3.tscn" id="4_7ndjw"]
+[ext_resource type="PackedScene" uid="uid://cvygf23o2sg36" path="res://scenes/gun.tscn" id="5_b0ymp"]
+[ext_resource type="PackedScene" uid="uid://vg1aw31650ng" path="res://scenes/enemies/enemy_5.tscn" id="5_q5dfb"]
+[ext_resource type="Texture2D" uid="uid://cldhrpgvnjq6f" path="res://assets/2D/crosshair.png" id="6_wg80d"]
+[ext_resource type="PackedScene" uid="uid://1tfshg163lhh" path="res://scenes/enemies/enemy_1.tscn" id="7_d07iw"]
+[ext_resource type="Script" path="res://scripts/level_end.gd" id="8_42shr"]
+[ext_resource type="FontFile" uid="uid://v1er3grcll8c" path="res://fonts/nulshock.otf" id="9_hccwn"]
+[ext_resource type="Material" uid="uid://cwcva86d4jii4" path="res://shaders/blur.tres" id="9_woiyf"]
+[ext_resource type="PackedScene" uid="uid://cguw8soxpcumm" path="res://scenes/buildings/large_building_1.tscn" id="12_ad4wj"]
+[ext_resource type="PackedScene" uid="uid://naktcq87ga7g" path="res://scenes/buildings/large_building_2.tscn" id="12_np11c"]
+[ext_resource type="PackedScene" uid="uid://bnghigbwuuslg" path="res://scenes/buildings/large_building_4.tscn" id="13_dw8vr"]
+[ext_resource type="PackedScene" uid="uid://bgwa6mjdcp5ja" path="res://scenes/buildings/large_building_3.tscn" id="14_bvjkq"]
+[ext_resource type="PackedScene" uid="uid://c2r16pkgnavbu" path="res://scenes/buildings/skyscraper_1.tscn" id="15_dh1k2"]
+[ext_resource type="PackedScene" uid="uid://dham3fhjv5ble" path="res://scenes/buildings/skyscraper_2.tscn" id="16_p7odc"]
+[ext_resource type="PackedScene" uid="uid://u5gqruqw5l2c" path="res://scenes/enemies/enemy_4.tscn" id="18_vglxd"]
+[ext_resource type="Texture2D" uid="uid://ccyyomhbdgicp" path="res://assets/2D/jetpack.png" id="21_g4lay"]
+[ext_resource type="Texture2D" uid="uid://d2ifoa4vuelon" path="res://assets/2D/double_jump.png" id="22_42ilw"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_konge"]
+albedo_color = Color(0, 0, 0, 1)
+albedo_texture = ExtResource("1_qdva4")
+emission_enabled = true
+emission_energy_multiplier = 10.0
+uv1_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i6imu"]
+albedo_color = Color(0, 0.686275, 0, 1)
+emission_enabled = true
+emission = Color(0, 1, 0, 1)
+emission_energy_multiplier = 5.0
+uv1_triplanar = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_e00vl"]
+margin = 0.0
+size = Vector3(10, 1.5, 10)
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_2431o"]
+panorama = ExtResource("2_7s84a")
+
+[sub_resource type="Sky" id="Sky_fpdok"]
+sky_material = SubResource("PanoramaSkyMaterial_2431o")
+
+[sub_resource type="Environment" id="Environment_6iy1y"]
+background_mode = 2
+sky = SubResource("Sky_fpdok")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_176th"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_vkmwk"]
+height = 1.0
+
+[sub_resource type="FontVariation" id="FontVariation_xpfpe"]
+base_font = ExtResource("9_hccwn")
+
+[sub_resource type="Theme" id="Theme_v3qck"]
+Label/fonts/font = SubResource("FontVariation_xpfpe")
+
+[sub_resource type="Animation" id="Animation_6sbcm"]
+resource_name = "reloaded"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(2.5, 2.5), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tmmnh"]
+_data = {
+"reloaded": SubResource("Animation_6sbcm")
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dmmiy"]
+bg_color = Color(0.0666667, 0, 0.388235, 0)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c12b8"]
+bg_color = Color(0.172549, 0.207843, 0.894118, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wuixu"]
+bg_color = Color(0.784314, 0.784314, 0.784314, 1)
+border_width_left = 30
+border_width_top = 30
+border_width_right = 30
+border_width_bottom = 80
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iifu7"]
+bg_color = Color(0.588235, 0.588235, 0.588235, 1)
+border_width_left = 30
+border_width_top = 30
+border_width_right = 30
+border_width_bottom = 80
+border_color = Color(0.235294, 0.196078, 0.568627, 1)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[node name="world" type="Node3D"]
+process_mode = 3
+script = ExtResource("1_3pc2h")
+
+[node name="enemies" type="Node3D" parent="."]
+
+[node name="Enemy" parent="enemies" instance=ExtResource("7_d07iw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 30.4774, 14)
+
+[node name="Enemy2" parent="enemies" instance=ExtResource("7_d07iw")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -64, 28.668, -27)
+
+[node name="Enemy3" parent="enemies" instance=ExtResource("7_d07iw")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -37.0384, 39.9637, 30.9837)
+
+[node name="Enemy4" parent="enemies" instance=ExtResource("3_qcdlw")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -32, 29.272, -35.8434)
+
+[node name="Enemy5" parent="enemies" instance=ExtResource("3_qcdlw")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -83, 48.5344, 16)
+
+[node name="Enemy7" parent="enemies" instance=ExtResource("18_vglxd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 28, 30)
+
+[node name="Enemy8" parent="enemies" instance=ExtResource("5_q5dfb")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -97.4806, 32.0093, 44.1843)
+
+[node name="Enemy6" parent="enemies" instance=ExtResource("4_7ndjw")]
+transform = Transform3D(0.766044, 0, -0.642788, 0, 1, 0, 0.642788, 0, 0.766044, -23.6314, 40.9787, 57.1278)
+
+[node name="stage" type="Node3D" parent="."]
+process_mode = 1
+
+[node name="Void" type="CSGBox3D" parent="stage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, -5, 0)
+size = Vector3(1000, 10, 1000)
+material = SubResource("StandardMaterial3D_konge")
+
+[node name="LevelEnd" type="CSGBox3D" parent="stage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -97.2842, 49.0763, 9.64179)
+use_collision = true
+size = Vector3(10, 1, 10)
+material = SubResource("StandardMaterial3D_i6imu")
+script = ExtResource("8_42shr")
+
+[node name="Area3D" type="Area3D" parent="stage/LevelEnd"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="stage/LevelEnd/Area3D"]
+shape = SubResource("BoxShape3D_e00vl")
+
+[node name="Large Building2" parent="stage" instance=ExtResource("12_ad4wj")]
+transform = Transform3D(-6.55671e-07, 0, -15, 0, 15, 0, 15, 0, -6.55671e-07, -10, 0, 32)
+
+[node name="Large Building3" parent="stage" instance=ExtResource("12_ad4wj")]
+transform = Transform3D(-6.55671e-07, 0, -15, 0, 15, 0, 15, 0, -6.55671e-07, -10, 0, 14)
+
+[node name="Large Building-h7Jaq7bqMq" parent="stage" instance=ExtResource("13_dw8vr")]
+transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, -35, 0, 20)
+
+[node name="Large Building-ppwtREejXg" parent="stage" instance=ExtResource("14_bvjkq")]
+transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, -63.681, 0, -17.5)
+
+[node name="Skyscraper-jIRx0AhYOR" parent="stage" instance=ExtResource("15_dh1k2")]
+transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, -75, 0, 17.5)
+
+[node name="Large Building-1bt4yYKmuK" parent="stage" instance=ExtResource("12_np11c")]
+transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, -31, 0, -17.5)
+
+[node name="Skyscraper-obYD8hWLTZ" parent="stage" instance=ExtResource("16_p7odc")]
+transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, -37.2598, 0, 55)
+
+[node name="Skyscraper-obYD8hWLTZ2" parent="stage" instance=ExtResource("16_p7odc")]
+transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, -75, 0, 55)
+
+[node name="env" type="Node3D" parent="."]
+process_mode = 1
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="env"]
+environment = SubResource("Environment_6iy1y")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="env"]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="player" type="CharacterBody3D" parent="." groups=["Player"]]
+process_mode = 1
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -75, 25, -19.75)
+script = ExtResource("3_7up8k")
+
+[node name="StandingCollision" type="CollisionShape3D" parent="player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_176th")
+
+[node name="CrouchingCollision" type="CollisionShape3D" parent="player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("CapsuleShape3D_vkmwk")
+disabled = true
+
+[node name="neck" type="Node3D" parent="player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+
+[node name="head" type="Node3D" parent="player/neck"]
+
+[node name="eyes" type="Node3D" parent="player/neck/head"]
+
+[node name="Camera3D" type="Camera3D" parent="player/neck/head/eyes"]
+
+[node name="hand" type="Node3D" parent="player/neck/head/eyes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, -0.3, -0.5)
+
+[node name="gun" parent="player/neck/head/eyes/hand" instance=ExtResource("5_b0ymp")]
+
+[node name="RayCast3D" type="RayCast3D" parent="player"]
+target_position = Vector3(0, 2, 0)
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Crosshair" type="Sprite2D" parent="UI"]
+position = Vector2(970, 534)
+scale = Vector2(2, 2)
+texture = ExtResource("6_wg80d")
+
+[node name="BottomRect" type="ColorRect" parent="UI"]
+layout_mode = 0
+offset_left = 1297.0
+offset_top = 1098.0
+offset_right = 2097.0
+offset_bottom = 1398.0
+rotation = -0.523599
+color = Color(0, 0, 0, 1)
+
+[node name="TopRect" type="ColorRect" parent="UI"]
+layout_mode = 0
+offset_left = -243.0
+offset_top = 137.0
+offset_right = 557.0
+offset_bottom = 437.0
+rotation = -0.523599
+color = Color(0, 0, 0, 1)
+
+[node name="Ammo" type="Label" parent="UI"]
+layout_mode = 0
+offset_left = 1639.0
+offset_top = 912.0
+offset_right = 1739.0
+offset_bottom = 1012.0
+pivot_offset = Vector2(50, 50)
+theme = SubResource("Theme_v3qck")
+theme_override_colors/font_outline_color = Color(0, 0.258824, 0.85098, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 80
+text = "15
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/Ammo"]
+libraries = {
+"": SubResource("AnimationLibrary_tmmnh")
+}
+
+[node name="Timer" type="Label" parent="UI"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 10.0
+offset_right = 525.0
+offset_bottom = 110.0
+theme = SubResource("Theme_v3qck")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0.478431, 0, 1)
+theme_override_constants/outline_size = 30
+theme_override_font_sizes/font_size = 80
+text = "0.000
+"
+
+[node name="Points" type="Label" parent="UI"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 110.0
+offset_right = 525.0
+offset_bottom = 210.0
+theme = SubResource("Theme_v3qck")
+theme_override_colors/font_outline_color = Color(0.862745, 0.392157, 0, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 80
+text = "0
+"
+
+[node name="JetpackBar" type="ProgressBar" parent="UI"]
+layout_mode = 0
+offset_left = 1797.0
+offset_top = 743.0
+offset_right = 1884.0
+offset_bottom = 1087.0
+theme_override_styles/background = SubResource("StyleBoxFlat_dmmiy")
+theme_override_styles/fill = SubResource("StyleBoxFlat_c12b8")
+value = 50.0
+fill_mode = 3
+show_percentage = false
+
+[node name="PauseUI" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Blur" type="ColorRect" parent="PauseUI"]
+material = ExtResource("9_woiyf")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1887.0
+offset_bottom = 1035.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="PauseUI"]
+layout_mode = 0
+offset_left = 815.0
+offset_top = 150.0
+offset_right = 1105.0
+offset_bottom = 287.0
+theme_override_font_sizes/font_size = 100
+text = "Pause"
+
+[node name="ResumeButton" type="Button" parent="PauseUI"]
+layout_mode = 0
+offset_left = 786.0
+offset_top = 357.0
+offset_right = 1134.0
+offset_bottom = 468.0
+theme_override_font_sizes/font_size = 50
+text = "Resume"
+
+[node name="QuitButton" type="Button" parent="PauseUI"]
+layout_mode = 0
+offset_left = 786.0
+offset_top = 520.0
+offset_right = 1134.0
+offset_bottom = 631.0
+theme_override_font_sizes/font_size = 45
+text = "Quit"
+
+[node name="StartUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Blur" type="ColorRect" parent="StartUI"]
+material = ExtResource("9_woiyf")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1887.0
+offset_bottom = 1035.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="StartUI/Blur"]
+layout_mode = 0
+offset_left = 258.0
+offset_top = 82.0
+offset_right = 1667.0
+offset_bottom = 219.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 50
+theme_override_fonts/font = ExtResource("9_hccwn")
+theme_override_font_sizes/font_size = 100
+text = "Choose your ability"
+
+[node name="LabelJetpack" type="Label" parent="StartUI/Blur"]
+layout_mode = 2
+offset_left = 348.0
+offset_top = 260.0
+offset_right = 793.0
+offset_bottom = 370.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 30
+theme_override_fonts/font = ExtResource("9_hccwn")
+theme_override_font_sizes/font_size = 80
+text = "Jetpack"
+
+[node name="LabelUpdraft" type="Label" parent="StartUI/Blur"]
+layout_mode = 2
+offset_left = 1120.0
+offset_top = 260.0
+offset_right = 1597.0
+offset_bottom = 370.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 30
+theme_override_fonts/font = ExtResource("9_hccwn")
+theme_override_font_sizes/font_size = 80
+text = "Updraft"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="StartUI/Blur"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -774.0
+offset_top = -157.5
+offset_right = 774.0
+offset_bottom = 492.5
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="StartUI/Blur/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_right = 100
+
+[node name="JetpackButton" type="Button" parent="StartUI/Blur/HBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_wuixu")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_iifu7")
+theme_override_styles/focus = SubResource("StyleBoxFlat_iifu7")
+icon = ExtResource("21_g4lay")
+icon_alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="StartUI/Blur/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_right = 100
+
+[node name="UpdraftButton" type="Button" parent="StartUI/Blur/HBoxContainer/MarginContainer2"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_wuixu")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_iifu7")
+theme_override_styles/focus = SubResource("StyleBoxFlat_iifu7")
+icon = ExtResource("22_42ilw")
+icon_alignment = 1
+
+[connection signal="body_entered" from="stage/LevelEnd/Area3D" to="stage/LevelEnd" method="_on_area_3d_body_entered"]
+[connection signal="pressed" from="PauseUI/ResumeButton" to="." method="_on_resume_button_pressed"]
+[connection signal="pressed" from="PauseUI/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="StartUI/Blur/HBoxContainer/MarginContainer/JetpackButton" to="." method="_on_jetpack_button_pressed"]
+[connection signal="pressed" from="StartUI/Blur/HBoxContainer/MarginContainer2/UpdraftButton" to="." method="_on_updraft_button_pressed"]

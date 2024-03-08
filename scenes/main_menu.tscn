@@ -1,0 +1,112 @@
+[gd_scene load_steps=13 format=3 uid="uid://bdmqc4xfdbhdv"]
+
+[ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_73py6"]
+[ext_resource type="PackedScene" uid="uid://cguw8soxpcumm" path="res://scenes/buildings/large_building_1.tscn" id="1_r3i5n"]
+[ext_resource type="PackedScene" uid="uid://cvygf23o2sg36" path="res://scenes/gun.tscn" id="2_tqe1b"]
+[ext_resource type="PackedScene" uid="uid://1tfshg163lhh" path="res://scenes/enemies/enemy_1.tscn" id="3_eprob"]
+[ext_resource type="PackedScene" uid="uid://bgwa6mjdcp5ja" path="res://scenes/buildings/large_building_3.tscn" id="4_tydr7"]
+[ext_resource type="PackedScene" uid="uid://c2r16pkgnavbu" path="res://scenes/buildings/skyscraper_1.tscn" id="5_s76ff"]
+[ext_resource type="Material" uid="uid://cwcva86d4jii4" path="res://shaders/blur.tres" id="6_vlmkj"]
+[ext_resource type="FontFile" uid="uid://v1er3grcll8c" path="res://fonts/nulshock.otf" id="8_vs174"]
+[ext_resource type="Texture2D" uid="uid://b4bw6i6o47aw7" path="res://assets/sky.hdr" id="9_57tcw"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_ktova"]
+panorama = ExtResource("9_57tcw")
+
+[sub_resource type="Sky" id="Sky_fpdok"]
+sky_material = SubResource("PanoramaSkyMaterial_ktova")
+
+[sub_resource type="Environment" id="Environment_3vbaw"]
+background_mode = 2
+sky = SubResource("Sky_fpdok")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="MainMenu" type="Node3D"]
+script = ExtResource("1_73py6")
+
+[node name="env" type="Node3D" parent="."]
+process_mode = 1
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="env"]
+environment = SubResource("Environment_3vbaw")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="env"]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="decor" type="Node3D" parent="."]
+
+[node name="Large Building" parent="decor" instance=ExtResource("1_r3i5n")]
+
+[node name="Large Building-ppwtREejXg" parent="decor" instance=ExtResource("4_tydr7")]
+transform = Transform3D(11.4907, 0, -9.64181, 0, 15, 0, 9.64181, 0, 11.4907, 29.675, 0, -23.7191)
+
+[node name="Skyscraper-jIRx0AhYOR" parent="decor" instance=ExtResource("5_s76ff")]
+transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, 31.0212, -10.1429, 22.2422)
+
+[node name="Skyscraper-jIRx0AhYOR2" parent="decor" instance=ExtResource("5_s76ff")]
+transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, 54.5476, -8.9915, 17.2199)
+
+[node name="gun" parent="decor" instance=ExtResource("2_tqe1b")]
+transform = Transform3D(1.26851e-07, 2.83069, -0.993569, -3, 2.26494e-07, 2.62268e-07, 3.22479e-07, 0.993569, 2.83069, 5.90291, 25.209, 1.54511)
+
+[node name="Enemy1" parent="decor" instance=ExtResource("3_eprob")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.128, 27.727, 0)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0.34202, -0.939693, 0, 0.939693, 0.34202, 1, 1.49502e-08, -4.10753e-08, 1.55577, 28.1905, 0)
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Blur" type="ColorRect" parent="Control"]
+material = ExtResource("6_vlmkj")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1887.0
+offset_bottom = 1035.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Control/Blur"]
+layout_mode = 0
+offset_left = 530.0
+offset_top = 106.0
+offset_right = 1390.0
+offset_bottom = 243.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 50
+theme_override_fonts/font = ExtResource("8_vs174")
+theme_override_font_sizes/font_size = 100
+text = "Doom's Edge"
+
+[node name="PlayButton" type="Button" parent="Control/Blur"]
+layout_mode = 0
+offset_left = 760.0
+offset_top = 450.0
+offset_right = 1140.0
+offset_bottom = 594.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("8_vs174")
+theme_override_font_sizes/font_size = 80
+text = "Play"
+
+[node name="QuitButton" type="Button" parent="Control/Blur"]
+layout_mode = 0
+offset_left = 760.0
+offset_top = 654.0
+offset_right = 1140.0
+offset_bottom = 798.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("8_vs174")
+theme_override_font_sizes/font_size = 80
+text = "Quit"
+
+[connection signal="pressed" from="Control/Blur/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="Control/Blur/QuitButton" to="." method="_on_quit_button_pressed"]

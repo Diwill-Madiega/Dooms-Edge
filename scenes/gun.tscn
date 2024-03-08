@@ -1,0 +1,96 @@
+[gd_scene load_steps=10 format=3 uid="uid://cvygf23o2sg36"]
+
+[ext_resource type="PackedScene" uid="uid://yp2jmv3s1tqy" path="res://models/1911lowpolyvrready.fbx" id="1_vq02m"]
+[ext_resource type="Texture2D" uid="uid://chgojgj7l251c" path="res://assets/textures/1911Texture.png" id="2_0qa4p"]
+[ext_resource type="AudioStream" uid="uid://6o3cl2ni1441" path="res://audio/reload.wav" id="3_wn4bp"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_res85"]
+albedo_texture = ExtResource("2_0qa4p")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1wmsy"]
+albedo_color = Color(0.784314, 0.784314, 0.784314, 1)
+albedo_texture = ExtResource("2_0qa4p")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0pfoi"]
+albedo_texture = ExtResource("2_0qa4p")
+
+[sub_resource type="Animation" id="Animation_28bx5"]
+resource_name = "reload"
+length = 1.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("RootNode:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5, 0.75, 1, 1.25),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 5),
+"update": 0,
+"values": [Vector3(0, 1.5708, 0), Vector3(0, 2.0944, 0), Vector3(0, 2.0944, 3.14159), Vector3(0, 2.0944, 6.28319), Vector3(0, 2.0944, 9.42478), Vector3(0, 1.5708, 12.5664)]
+}
+
+[sub_resource type="Animation" id="Animation_olkvv"]
+resource_name = "shoot"
+length = 0.2
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("RootNode:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.03, 0.15),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0.2), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("RootNode:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.03, 0.15),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 1.5708, 0), Vector3(0, 1.5708, 0.261799), Vector3(0, 1.5708, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_rpknx"]
+_data = {
+"reload": SubResource("Animation_28bx5"),
+"shoot": SubResource("Animation_olkvv")
+}
+
+[node name="gun" instance=ExtResource("1_vq02m")]
+process_mode = 1
+
+[node name="RootNode" parent="." index="0"]
+transform = Transform3D(-2.18557e-09, 0, 0.05, 0, 0.05, 0, -0.05, 0, -2.18557e-09, 0, 0, 0)
+
+[node name="Supressor" parent="RootNode" index="0"]
+material_override = SubResource("StandardMaterial3D_res85")
+cast_shadow = 0
+
+[node name="1911" parent="RootNode" index="1"]
+material_override = SubResource("StandardMaterial3D_1wmsy")
+cast_shadow = 0
+
+[node name="Mag" parent="RootNode" index="2"]
+material_override = SubResource("StandardMaterial3D_0pfoi")
+cast_shadow = 0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1"]
+libraries = {
+"": SubResource("AnimationLibrary_rpknx")
+}
+
+[node name="RayCast3D" type="RayCast3D" parent="." index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, -0.6)
+target_position = Vector3(0, 0, -1)
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." index="3"]
+stream = ExtResource("3_wn4bp")

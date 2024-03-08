@@ -1,0 +1,70 @@
+[gd_scene load_steps=9 format=3 uid="uid://cesdu2jj61xah"]
+
+[ext_resource type="Script" path="res://scripts/bullet.gd" id="1_muae5"]
+[ext_resource type="AudioStream" uid="uid://ccmcvqlcymh7w" path="res://audio/gunshot.mp3" id="2_ecm42"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_cpjbc"]
+radius = 0.05
+height = 0.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hr3cm"]
+albedo_color = Color(0.447059, 0.403922, 0.356863, 1)
+metallic = 1.0
+metallic_specular = 1.0
+emission_enabled = true
+emission = Color(1, 0.717647, 0.203922, 1)
+emission_energy_multiplier = 10.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_okrkq"]
+albedo_color = Color(0.509804, 0.509804, 0.509804, 1)
+emission_enabled = true
+emission = Color(0.956863, 0.662745, 0.129412, 1)
+emission_energy_multiplier = 3.0
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_mt3m7"]
+direction = Vector3(0, 0, 1)
+initial_velocity_min = 3.0
+initial_velocity_max = 5.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_awbca"]
+size = Vector3(0.04, 0.04, 0.04)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_sfgx1"]
+data = PackedVector3Array(-0.025, 0.025, 0.05, 0.025, 0.025, 0.05, -0.025, -0.025, 0.05, 0.025, 0.025, 0.05, 0.025, -0.025, 0.05, -0.025, -0.025, 0.05, 0.025, 0.025, -0.05, -0.025, 0.025, -0.05, 0.025, -0.025, -0.05, -0.025, 0.025, -0.05, -0.025, -0.025, -0.05, 0.025, -0.025, -0.05, 0.025, 0.025, 0.05, 0.025, 0.025, -0.05, 0.025, -0.025, 0.05, 0.025, 0.025, -0.05, 0.025, -0.025, -0.05, 0.025, -0.025, 0.05, -0.025, 0.025, -0.05, -0.025, 0.025, 0.05, -0.025, -0.025, -0.05, -0.025, 0.025, 0.05, -0.025, -0.025, 0.05, -0.025, -0.025, -0.05, 0.025, 0.025, 0.05, -0.025, 0.025, 0.05, 0.025, 0.025, -0.05, -0.025, 0.025, 0.05, -0.025, 0.025, -0.05, 0.025, 0.025, -0.05, -0.025, -0.025, 0.05, 0.025, -0.025, 0.05, -0.025, -0.025, -0.05, 0.025, -0.025, 0.05, 0.025, -0.025, -0.05, -0.025, -0.025, -0.05)
+
+[node name="bullet" type="Area3D"]
+script = ExtResource("1_muae5")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_cpjbc")
+surface_material_override/0 = SubResource("StandardMaterial3D_hr3cm")
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+process_mode = 1
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0218572)
+target_position = Vector3(0, 0, -0.15)
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0442872)
+material_override = SubResource("StandardMaterial3D_okrkq")
+emitting = false
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_mt3m7")
+draw_pass_1 = SubResource("BoxMesh_awbca")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("ConcavePolygonShape3D_sfgx1")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+autostart = true
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("2_ecm42")
+autoplay = true
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
